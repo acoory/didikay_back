@@ -5,9 +5,11 @@ const bcrypt = require('bcrypt');
 
 class UserService {
 
-    static async createUser(email: string, password: string): Promise<Omit<any, "createdAt" | "password" | "updatedAt">> {
-        if (!email || !password) {
-            throw new Error('Email and password are required');
+    static async createUser(userData:any): Promise<Omit<any, "createdAt" | "password" | "updatedAt">> {
+        const {email, password, firstname, lastname} = userData;
+
+        if (!email || !password || !firstname || !lastname) {
+            throw new Error('All fields are required');
         }
 
         if (!this.verifEmail(email)) {
@@ -23,7 +25,7 @@ class UserService {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const user = await UserRepository.createUser(email, hashedPassword);
+            const user = await UserRepository.createUser(email, firstname, lastname, hashedPassword);
 
             return {
                 id: user.id,

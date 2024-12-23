@@ -8,9 +8,16 @@ const router: Router = Router();
 
 router.post("/create", async (req: Request, res: Response) => {
     try {
-        const {email, password} = req.body;
+        const {email, password, lastname, firstname} = req.body;
 
-        const user = await UserService.createUser(email, password);
+        const createUserData = {
+            email: email,
+            password: password,
+            lastname: lastname,
+            firstname: firstname
+        }
+
+        const user = await UserService.createUser(createUserData);
 
 
         const token = JwtService.sign(user);

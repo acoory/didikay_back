@@ -37,5 +37,7 @@ const Booking = sequelize.define('booking', {
     },
 });
 
+Booking.belongsTo(UserModel, {foreignKey: 'userId'});
+
 
 export default Booking;

@@ -3,9 +3,9 @@ import UserModel from '../models/user.model';
 
 class UserRepository {
 
-    async createUser(email: string, password: string) {
+    async createUser(email: string,firstname: string, lastname:string, password: string) {
         try {
-            const user = await UserModel.create({email, password});
+            const user = await UserModel.create({email, password, firstname, lastname});
 
             if (!user) {
                 throw new Error('Failed to create user');

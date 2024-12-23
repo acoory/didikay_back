@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation de Rendez-vous</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #0078D7;
+            color: #ffffff;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            color: #333333;
+        }
+        .content p {
+            margin-bottom: 15px;
+        }
+        .button-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .button {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #28a745;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .button.cancel {
+            background-color: #dc3545;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #666666;
+        }
+        .footer a {
+            color: #0078D7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Confirmation de Rendez-vous</h1>
+    </div>
+    <div class="content">
+        <p>Bonjour <strong><%= client %></strong>,</p>
+        <p>Votre rendez-vous a bien été confirmé avec les détails suivants :</p>
+        <ul>
+            <li><strong>Date : </strong><%= date %></li>
+            <li><strong>Heure : </strong> <%= hour %></li>
+            <li><strong>Lieu : </strong> <%= location %></li>
+        </ul>
+        <p>Si vous souhaitez modifier ou annuler ce rendez-vous, veuillez cliquer sur l'un des boutons ci-dessous.</p>
+        <div class="button-container">
+            <a href="[Lien pour Modifier]" class="button">Modifier le Rendez-vous</a>
+            <a href="[Lien pour Annuler]" class="button cancel">Annuler le Rendez-vous</a>
+        </div>
+        <p>Nous sommes impatients de vous rencontrer. Si vous avez des questions, n'hésitez pas à nous contacter.</p>
+        <p>Merci,<br>L'équipe [Nom de votre entreprise]</p>
+    </div>
+    <div class="footer">
+        <p>Ce message vous a été envoyé par <a href="[Site Web de l'entreprise]">[Nom de l'entreprise]</a>.</p>
+        <p>Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet email.</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import {Router, Request, Response} from 'express';
 import bookingRepository from "../../domain/repositories/bookingRepository";
 import getAvailableSlots from "../../domain/usecases/getAvailableSlots";
+import mailRepository from "../../domain/repositories/mailRepository";
 
 
 const router: Router = Router();
@@ -53,7 +54,11 @@ router.post("/create", async (req: Request, res: Response):Promise<any> => {
         }
 
         // Crée une nouvelle réservation
-        const booking = await bookingRepository.createBooking(parsedDateStart, parsedDateEnd, userId);
+        const booking: any = await bookingRepository.createBooking(parsedDateStart, parsedDateEnd, userId);
+
+        // send mail confirmation
+        await mailRepository.sendMail(booking.id, booking.userId);
+
 
         return res.status(201).json({ message: 'Réservation effectuée avec succès.', booking });
     } catch (error) {
