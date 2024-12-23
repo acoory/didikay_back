@@ -9,11 +9,11 @@ const Booking = sequelize.define('booking', {
         primaryKey: true,
     },
     dateTimeStart: {
-        type: DataTypes.DATE, // Début du rendez-vous
+        type: DataTypes.DATE,
         allowNull: false,
     },
     dateTimeEnd: {
-        type: DataTypes.DATE, // Fin du rendez-vous
+        type: DataTypes.DATE,
         allowNull: false,
     },
     location: {
@@ -25,6 +25,10 @@ const Booking = sequelize.define('booking', {
         type: DataTypes.ENUM('pending', 'confirmed', 'cancelled'),
         defaultValue: 'pending',
         allowNull: false,
+    },
+    code: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     userId: {
         type: DataTypes.INTEGER,

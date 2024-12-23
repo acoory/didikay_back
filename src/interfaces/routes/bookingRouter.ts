@@ -67,4 +67,21 @@ router.post("/create", async (req: Request, res: Response):Promise<any> => {
     }
 });
 
+router.post("/cancel", async (req: Request, res: Response):Promise<any> => {
+    const { bookingId, code } = req.body;
+
+    try {
+        const booking = await bookingRepository.cancelBooking(bookingId, code);
+
+        if (!booking) {
+            return res.status(404).json({ message: 'Réservation non trouvée.' });
+        }
+
+        return res.status(200).json({ message: 'Réservation annulée avec succès.', booking });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+});
+
 export default router;

@@ -15,6 +15,7 @@ export const formatDataForMail = (data: any) => {
         date: dateFormatedString,
         hour: hoursFormated,
         location: location,
-        client: data.user.firstname + " " + data.user.lastname
+        client: data.user.firstname + " " + data.user.lastname,
+        code: data.code
     }
 }
