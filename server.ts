@@ -5,6 +5,7 @@ import appRouter from "./src/app";
 import middleware from "./src/interfaces/middleware/authMiddleware";
 import {models} from './src/domain/models/index';
 import helmet from "helmet";
+var cors = require('cors')
 
 dotenv.config();
 
@@ -14,6 +15,11 @@ const port = process.env.PORT || 3000;
 // Middleware de sécurité
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors({
+    origin: 'http://localhost:3001', // Autorise uniquement cette origine
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
+    allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+}));
 //
 app.use(helmet());
 // Route de l'application

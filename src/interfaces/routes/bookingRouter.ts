@@ -6,13 +6,14 @@ import mailRepository from "../../domain/repositories/mailRepository";
 
 const router: Router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
     try {
+        const { date } = req.body;
 
         const bookingData = await bookingRepository.findAll();
 
-        const date = new Date('2024-12-25'); // TODO: Remplacer
-        const createSlot = await getAvailableSlots(date, bookingData);
+        const formatDate = new Date(date);
+        const createSlot = await getAvailableSlots(formatDate, bookingData);
 
         res.status(200).json({
             message: "All bookings", booking: createSlot

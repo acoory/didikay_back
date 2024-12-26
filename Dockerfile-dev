@@ -1,4 +1,8 @@
 FROM node:latest
+
+RUN apt-get update && apt-get install -y tzdata
+ENV TZ=Europe/Paris
+
 WORKDIR /usr/src/app
 COPY package.json package-lock.json ./
 RUN npm ci
