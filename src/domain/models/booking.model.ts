@@ -1,7 +1,7 @@
 import {DataTypes} from '@sequelize/core';
 import sequelize from '../../config/database';
 import UserModel from './user.model';
-
+import PrestationModel  from "./prestation.model";
 const Booking = sequelize.define('booking', {
     id: {
         type: DataTypes.INTEGER,
@@ -39,9 +39,19 @@ const Booking = sequelize.define('booking', {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     },
+    prestationId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: PrestationModel,
+            key: 'id',
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+    },
 });
 
 Booking.belongsTo(UserModel, {foreignKey: 'userId'});
+Booking.belongsTo(PrestationModel, {foreignKey: 'prestationId'});
 
 
 export default Booking;
