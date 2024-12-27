@@ -5,3 +5,16 @@
 Ce projet a été initialisé pour répondre au besoin spécifique de gestion des rendez-vous pour une coiffeuse. Il permet la réservation de rendez-vous, l'annulation, ainsi que l'envoi d'e-mails de confirmation, à la fois pour le client et le propriétaire du site, afin de maintenir une communication fluide et efficace.
 
 Pour plus de détails sur le boilerplate utilisé, visitez le dépôt GitHub : <a href="https://github.com/acoory/boilerplate_express_clean_architecture">BoilerPlate Express Clean Architecture.</a>
+
+## 📦 Seeders
+
+```bash
+npx sequelize-cli db:seed:all
+```
+
+## creation d'un seeder
+
+```bash
+ npx sequelize-cli seed:generate --name <name>
+```
+

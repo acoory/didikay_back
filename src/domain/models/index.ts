@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 import BookingModel from "./booking.model";
 import sequelize from "../../config/database";
 import {createDb} from "../../../server";
+import ServicesModel from "./services.model";
 import PrestationModel from "./prestation.model";
+import SubprestationModel from "./subprestation.model";
 dotenv.config();
 
 const createDatabase = async () => {
@@ -22,16 +24,26 @@ const createDatabase = async () => {
 
         await UserModel.sync({force: true});
         await PrestationModel.sync({force: true});
+        await ServicesModel.sync({force: true});
         await BookingModel.sync({force: true});
+        await SubprestationModel.sync({force: true});
+
+        //relation
+        SubprestationModel.belongsTo(PrestationModel, {foreignKey: 'prestationId'});
+        PrestationModel.hasMany(SubprestationModel, {foreignKey: 'prestationId'});
+        SubprestationModel.hasMany(ServicesModel, { foreignKey: 'subprestationId' });
+
         console.log("Database created!");
     } catch (error) {
         console.error('Error synchronizing database:', error);
     }
 };
 
-export const models = {
+export  {
     createDatabase,
-    User: UserModel,
-    Booking: BookingModel,
-    Prestation: PrestationModel,
+    UserModel,
+    BookingModel,
+    SubprestationModel,
+    ServicesModel,
+    PrestationModel
 };

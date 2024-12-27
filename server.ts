@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import sequelize from "./src/config/database";
 import appRouter from "./src/app";
 import middleware from "./src/interfaces/middleware/authMiddleware";
-import {models} from './src/domain/models/index';
+import {createDatabase} from './src/domain/models/index';
 import helmet from "helmet";
 var cors = require('cors')
 
@@ -35,8 +35,7 @@ sequelize.authenticate()
         console.log("Database connected!");
         if (createDb) {
 
-
-            models.createDatabase();
+            createDatabase();
         }
 
         app.listen(port, () => {
