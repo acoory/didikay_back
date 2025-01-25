@@ -5,6 +5,7 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: test
       MYSQL_DATABASE: app_db
+      TZ: 'Europe/Paris'
     ports:
       - "3306:3306"
     volumes:

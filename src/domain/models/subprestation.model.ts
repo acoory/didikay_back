@@ -1,30 +1,26 @@
 import {DataTypes} from '@sequelize/core';
 import sequelize from '../../config/database';
-import { PrestationModel } from './index';
+// import { PrestationModel } from './index';
+import ServiceModel from './services.model';
+import prestationModel from "./prestation.model";
+
 
 const SubprestationModel = sequelize.define('subprestation', {
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
-    prestationId: {
+    prestation_id: {
         type: DataTypes.INTEGER,
-        references: {
-            model: PrestationModel,
-            key: 'id',
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        allowNull: false,
     },
-},{
-    timestamps: false
+}, {
+    timestamps: false,
 });
-
-
 
 export default SubprestationModel;

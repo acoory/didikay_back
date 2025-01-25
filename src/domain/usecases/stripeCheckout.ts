@@ -1,48 +1,50 @@
-const Stripe = require('stripe');
 import dotenv from "dotenv";
+
+const Stripe = require('stripe');
 
 dotenv.config();
 
 
-type item = {
-    price: number;
-    name: string;
-}
 
-export const stripeCheckout = async (item: item) => {
+export const stripeCreatePayment = async (items: any, formData:any, booking:any) => {
     // @ts-ignore
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
    try {
-       if (!item || !item.name || !item.price) {
-              throw new Error("Missing required fields: name and price");
-       }
 
-
-       if (typeof item.price !== 'number' || item.price <= 0) {
-              return { error: "Price must be a positive number in cents" };
-       }
-
-       const session = await stripe.checkout.sessions.create({
-           payment_method_types: ['card'],
-           line_items: [
-               {
-                   price_data: {
-                       currency: "eur",
-                       product_data: {
-                           name: item.name,
-                       },
-                       unit_amount: item.price * 100,
-                   },
-                   quantity: 1,
-               },
-           ],
-           mode: 'payment',
-           success_url: `${process.env.CLIENT_URL}/success`,
-           cancel_url: `${process.env.CLIENT_URL}/cancel`,
-       });
-
-         return { url: session.url };
+       return await stripe.checkout.sessions.create({
+             payment_method_types: ['card'],
+             line_items: [...items.map((item:any) => {
+                 return {
+                     price_data: {
+                         currency: "eur",
+                         product_data: {
+                             name: item.name,
+                         },
+                         unit_amount: 0,
+                     },
+                     quantity: 1,
+                 }
+             }),{
+                    price_data: {
+                        currency: "eur",
+                        product_data: {
+                            name: "Acompte",
+                        },
+                        unit_amount: 2000,
+                    },
+                    quantity: 1,
+             }],
+             mode: 'payment',
+             customer_email: formData.email,
+             metadata: {
+                    client: JSON.stringify(formData),
+                    booking: JSON.stringify(booking),
+                    services: JSON.stringify(items),
+             },
+             success_url: `${process.env.SERVER_URL}/api/client/stripe/verify-payment/{CHECKOUT_SESSION_ID}`,
+             cancel_url: `${process.env.CLIENT_URL}/cancel`,
+         });
    } catch (error) {
        console.error("Error creating checkout session:", error);
        // @ts-ignore

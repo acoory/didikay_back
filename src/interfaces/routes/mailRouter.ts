@@ -7,9 +7,10 @@ const router: Router = Router();
 router.get("/", async (req: Request, res: Response) => {
 
     await mailService.sendMailConfirmation("joelle42@ethereal.email", "Test", "Test", {
+        client: "Joelle",
         date: "2022-12-25",
-        hour: "12:00",
-        location: "Paris"
+        // hour: "12:00",
+        // location: "Paris"
     });
 
     res.status(200).json({

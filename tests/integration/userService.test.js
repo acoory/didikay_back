@@ -1,10 +1,10 @@
 import UserService from '../../src/domain/services/userService';
-import UserRepository from '../../src/domain/repositories/userRepository';
+import UserRepository from '../../src/domain/repositories/clientRepository';
 import {describe} from "node:test";
 import bcrypt from 'bcrypt';
 
 
-jest.mock('../../src/domain/repositories/userRepository');
+jest.mock('../../src/domain/repositories/clientRepository');
 jest.mock('bcrypt', () => ({
     hash: jest.fn().mockResolvedValue('test'), // Simule le hachage du mot de passe
     compare: jest.fn().mockResolvedValue(true), // Simule la comparaison des mots de passe

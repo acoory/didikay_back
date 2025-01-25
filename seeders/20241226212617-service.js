@@ -12,63 +12,46 @@ module.exports = {
         name: 'Twist',
         description: 'Twist',
         price: 40,
-        duration: 120,
-        status: 'active',
-        subprestationId: 1,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        duration_minutes: 30,
+        subprestation_id: 1,
       },
         {
             name: 'Crochet piqué',
             description: 'Crochet piqué',
             price: 80,
-            duration: 120,
-            status: 'active',
-            subprestationId: 1,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            duration_minutes: 20,
+            subprestation_id: 1,
         },
         {
           name: 'Crochet',
           description: 'Crochet',
           price: 50,
-          duration: 120,
-          status: 'active',
-          subprestationId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date()
+          duration_minutes: 20,
+          subprestation_id: 1,
         }, {
               name: 'Barrel',
               description: 'Barrel',
               price: 20,
-              duration: 70,
-              status: 'active',
-              subprestationId: 2,
-              createdAt: new Date(),
-              updatedAt: new Date()
+              duration_minutes: 40,
+              subprestation_id: 2,
           },
           {
               name: 'Vanille/Tresse',
               description: 'Vanille ou Tresse',
               price: 35,
-              duration: 40,
-              status: 'active',
-              subprestationId: 2,
-              createdAt: new Date(),
-              updatedAt: new Date()
+              duration_minutes: 40,
+              subprestation_id: 2,
           },
           {
               name: 'Knot Bob',
               description: 'Knot Bob',
               price: 60,
-              duration: 40,
-              status: 'active',
-              subprestationId: 2,
-              createdAt: new Date(),
-              updatedAt: new Date()
+              duration_minutes: 40,
+              subprestation_id: 2,
           }], {});
 
   },
+
 
   async down (queryInterface, Sequelize) {
     /**

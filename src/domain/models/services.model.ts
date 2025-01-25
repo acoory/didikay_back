@@ -1,45 +1,37 @@
 import {DataTypes} from '@sequelize/core';
 import sequelize from '../../config/database';
 import subprestationModel from "./subprestation.model";
+import prestationModel from "./prestation.model";
 
-const ServicesModel = sequelize.define('services', {
+const ServiceModel = sequelize.define('service', {
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
     },
     name: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
     },
     description: {
-        type: DataTypes.STRING,
-        allowNull: false,
+        type: DataTypes.TEXT,
     },
     price: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
     },
-    duration: {
+    duration_minutes: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    status: {
-        type: DataTypes.ENUM('active', 'inactive'),
-        defaultValue: 'active',
+    subprestation_id: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
-    subprestationId: {
-        type: DataTypes.INTEGER,
-        references: {
-            model: subprestationModel,
-            key: 'id',
-        },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
-    }
+}, {
+    timestamps: false,
 });
 
-ServicesModel.belongsTo(subprestationModel, {foreignKey: 'subprestationId'});
+export default ServiceModel;
 
-export default ServicesModel;
+// exemple

@@ -5,9 +5,10 @@ import ejs from 'ejs';
 dotenv.config();
 
 type EmailConfirmationData = {
+    client: string,
     date: string;
-    hour: string;
-    location: string;
+    // hour: string;
+    // location: string;
 }
 
 
@@ -16,11 +17,11 @@ class mailService {
 
     constructor() {
         this.transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
+            host: 'smtp.gmail.com',
             port: 587,
             auth: {
-                user: 'joelle42@ethereal.email',
-                pass: 'P8NU3VYZNaeUtR46TQ'
+                user: process.env.NODEMAILER_USER,
+                pass: 'ugxx slbn gnwi nbyz'
             }
         });
     }
@@ -30,6 +31,25 @@ class mailService {
 
             var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailTemplates/confirmationEmailTemplate.ejs', data);
 
+            const info = await this.transporter.sendMail({
+                from: process.env.NODEMAILER_USER,
+                to,
+                subject,
+                text: message,
+                html: html
+            });
+
+            return info;
+
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
+    }
+
+    async sendMailConfirmationPrestataire(to: string, subject: string, message: string, data: EmailConfirmationData) {
+        try {
+
+            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailTemplates/confirmEmailForPrestataire.ejs', data);
 
             const info = await this.transporter.sendMail({
                 from: process.env.NODEMAILER_USER,

@@ -5,12 +5,37 @@ class bookingRepository {
         return await BookingModel.findAll();
     }
 
-    async createBooking(dateTimeStart: Date, dateTimeEnd: Date, userId: number) {
+    async createBooking(bookingData:any, transaction?: any) {
 
-        const code = Math.random().toString(36).substring(7);
+        try {
+            let localTransaction = transaction
 
-        return await BookingModel.create({dateTimeStart, dateTimeEnd, userId, code});
+            if (!localTransaction) {
+                // @ts-ignore
+                localTransaction = await BookingModel.sequelize.transaction();
+            }
+
+
+            // @ts-ignore
+            const booking = await BookingModel.create(bookingData, {transaction: localTransaction});
+            //
+            if (!transaction) {
+                await localTransaction.commit();
+            }
+
+            if (!booking) {
+                throw new Error('Failed to create booking');
+            }
+
+            return booking;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
     }
+
+        // @ts-ignore
+        // return await BookingModel.create({booking,...services,userId});
+
 
     async cancelBooking(bookingId: number, code: string) {
         try {

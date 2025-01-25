@@ -36,19 +36,20 @@ router.post("/create", async (req: Request, res: Response) => {
 
 router.post("/login", async (req: Request, res: Response) => {
 
-    try {
-        const {email, password} = req.body;
 
-        const user = await UserService.login(email, password);
-
-        const token = JwtService.sign(user);
-
-        res.cookie('token', token, {httpOnly: true, secure: false, sameSite: 'none'});
-
-        res.status(200).json({message: "User logged in successfully", user: user});
-    } catch (error: any) {
-        res.status(400).json({message: error.message});
-    }
+    // try {
+    //     const {email, password} = req.body;
+    //
+    //     const user = await UserService.login(email, password);
+    //
+    //     const token = JwtService.sign(user);
+    //
+    //     res.cookie('token', token, {httpOnly: true, secure: false, sameSite: 'none'});
+    //
+    //     res.status(200).json({message: "User logged in successfully", user: user});
+    // } catch (error: any) {
+    //     res.status(400).json({message: error.message});
+    // }
 });
 
 export default router;

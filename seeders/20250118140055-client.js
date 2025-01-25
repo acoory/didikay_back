@@ -8,16 +8,15 @@ module.exports = {
      *
      * Example:
      * */
-      await queryInterface.bulkInsert('subprestations', [{
-        id: 1,
-       name: 'Racine',
-        prestation_id: 1,
-     },
-        {
-          id: 2,
-          name: 'Coiffure',
-          prestation_id: 1,
-        }], {});
+    // await queryInterface.bulkInsert('clients', [{
+    //   id: 1,
+    //   firstname: 'anthony',
+    //   lastname: "cory",
+    //   email: "test@test.fr",
+    //   phone: "0606060606",
+    //   createdAt: new Date(),
+    //     updatedAt: new Date()
+    // }], {});
 
   },
 

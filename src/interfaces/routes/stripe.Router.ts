@@ -1,24 +1,35 @@
 import { Router, Request, Response } from 'express';
-import {stripeCheckout} from "../../domain/usecases/stripeCheckout";
+import {stripeCreatePayment} from "../../domain/usecases/stripeCheckout";
 import {stripeVerifyPayment} from "../../domain/usecases/stripeVerifyPayment";
+import clientRepository from "../../domain/repositories/clientRepository";
+import sequelize from "../../config/database";
+import bookingRepository from "../../domain/repositories/bookingRepository";
+import moment from "moment";
+import 'moment/locale/fr';
+import mailService from "../../infrastructure/mailer/mailService";
+import dotenv from "dotenv";
+dotenv.config();
 
 
 const router: Router = Router();
 
-router.get("/create-checkout-session", async (req: Request, res: Response): Promise<any> => {
+router.post("/create-checkout-session", async (req: Request, res: Response): Promise<any> => {
     try {
+        const { formData, devis, booking } = req.body;
+
+        if(!formData || !devis || !booking) {
+            return res.status(400).json({ error: "Missing required fields: formData, devis and booking" });
+        }
+
         console.log("Stripe Secret Key:", process.env.STRIPE_SECRET_KEY);
 
         // const { item } = req.body;
 
-        const item = {
-            price: 500,
-            name: "Test Product",
-        }
+        const createPayment = await stripeCreatePayment(devis, formData,booking );
 
-        const checkoutPayment = await stripeCheckout(item);
-
-        res.redirect(303, checkoutPayment.url);
+        return res.status(200).json({ url: createPayment.url });
+        // return res.redirect(303, createPayment.url);
+    //
     } catch (error) {
         console.error("Error creating checkout session:", error);
         // @ts-ignore
@@ -26,15 +37,60 @@ router.get("/create-checkout-session", async (req: Request, res: Response): Prom
     }
 });
 
-router.post("/verify-payment/:sessionId", async (req: Request, res: Response): Promise<void> => {
+router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Promise<void> => {
     try {
         const { sessionId } = req.params;
 
-        const paymentIntent = await stripeVerifyPayment(sessionId);
+        const verifyPayment = await stripeVerifyPayment(sessionId);
 
-        if (typeof paymentIntent === "string") {
-            res.redirect(303, paymentIntent);
+        if(verifyPayment.success) {
+
+            const transaction = await sequelize.transaction(async (t:any) => {
+                const { booking, client, services } = verifyPayment.session.metadata;
+
+                const serviceIdArray = JSON.parse(services).map((item:any) => item.id);
+                const prestationDuration = JSON.parse(services).reduce((acc:any, item:any) => acc + item.duration_minutes, 0);
+
+                const prestationStart = moment(JSON.parse(booking).start).valueOf();
+                const prestationEnd = moment(JSON.parse(booking).end).add(prestationDuration, 'minutes').valueOf();
+
+                const userRepo:any = await clientRepository.createUser(JSON.parse(client), t);
+
+                const bookingData = {
+                    dateTimeStart: prestationStart,
+                    dateTimeEnd: prestationEnd,
+                    userId: userRepo.id,
+                    data: serviceIdArray
+                }
+
+                const bookingRepo:any = await bookingRepository.createBooking(bookingData, t);
+
+                return { booking: bookingRepo, client: userRepo };
+            });
+
+            if(transaction) {
+
+                const { client, booking } = transaction
+
+                moment().locale('fr');
+                const date = moment(booking.dateTimeStart).format("dddd D MMMM [à] HH[h]mm");
+
+                await mailService.sendMailConfirmation(client.email, "Confirmation de rendez-vous DIDIKAY", "Test", {
+                    client: client.firstname + " " + client.lastname,
+                    date: date
+                });
+                // @ts-ignore
+                await mailService.sendMailConfirmationPrestataire(process.env.NODEMAILER_USER, "Un nouveau rendez-vous a été pris", "Test", {
+                    client: client.firstname + " " + client.lastname,
+                    date: date
+                });
+            }
+
+            return res.redirect(303, `${process.env.CLIENT_URL}/success`);
         }
+
+        return res.redirect(303, `${process.env.CLIENT_URL}/cancel`);
+
     } catch (error) {
         console.error("Error verifying payment:", error);
         // @ts-ignore

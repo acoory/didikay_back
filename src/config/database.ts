@@ -14,6 +14,7 @@ const config = {
         password: process.env.DB_PASSWORD_DEV,
         host: process.env.DB_HOST_DEV,
         port: parseInt(process.env.DB_PORT_DEV || '3306'),
+        timezone: 'Europe/Paris',
     },
     production: {
         dialect: MySqlDialect,
@@ -22,6 +23,7 @@ const config = {
         password: process.env.DB_PASSWORD_PROD,
         host: process.env.DB_HOST_PROD,
         port: parseInt(process.env.DB_PORT_PROD || '3306'),
+        timezone: 'Europe/Paris',
     }
 }
 

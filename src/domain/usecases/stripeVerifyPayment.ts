@@ -1,21 +1,33 @@
+import sequelize from "../../config/database";
+
 const Stripe = require('stripe');
 
 import dotenv from "dotenv";
 
 dotenv.config();
 
-export const stripeVerifyPayment  = async (paymentIntentId: string):Promise<void | string> => {
+export const stripeVerifyPayment  = async (sessionId: String):Promise<{ success: boolean, session: any | null }> => {
 
     try {
-        const paymentIntent = await Stripe.paymentIntents.retrieve(paymentIntentId);
+        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-        if(paymentIntent.status == "paid") {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if(session.payment_status == "paid") {
+
             console.log("Payment intent is paid");
-            return "/success";
+            console.log("Session Data:", session);
+            return {
+                success: true,
+                session: session
+            }
         }
+            console.log("Payment intent is not paid");
+            return {
+                success: false,
+                session: null
+            }
 
-        console.log("Payment intent is not paid");
-        return "/cancel";
 
     } catch (error) {
         console.error("Error verifying payment intent:", error);

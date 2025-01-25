@@ -1,5 +1,5 @@
-import UserRepository from '../repositories/userRepository';
-import {UserModelAttributes} from "../models/user.model";
+import UserRepository from '../repositories/clientRepository';
+// import {UserModelAttributes} from "../models/client.model";
 
 const bcrypt = require('bcrypt');
 
@@ -25,55 +25,55 @@ class UserService {
 
             const hashedPassword = await bcrypt.hash(password, 10);
 
-            const user = await UserRepository.createUser(email, firstname, lastname, hashedPassword);
+            // const user = await UserRepository.createUser(email, firstname, lastname, hashedPassword);
 
             return {
-                id: user.id,
-                email: user.email,
+                id: 1,
+                email: "d",
             };
         } catch (error: any) {
             throw new Error(error.message);
         }
     }
 
-    static async getUserById(id: number): Promise<UserModelAttributes> {
-        try {
-            const user = await UserRepository.getUserById(id);
-            if (!user) {
-                throw new Error('User not found');
-            }
-            return user;
-        } catch (error: any) {
-            throw new Error(error.message);
-        }
-    }
+    // static async getUserById(id: number): Promise<UserModelAttributes> {
+    //     try {
+    //         const user = await UserRepository.getUserById(id);
+    //         if (!user) {
+    //             throw new Error('User not found');
+    //         }
+    //         return user;
+    //     } catch (error: any) {
+    //         throw new Error(error.message);
+    //     }
+    // }
 
-    static async login(email: string, password: string): Promise<Omit<any, "createdAt" | "updatedAt">> {
-
-        if (!email || !password) {
-            throw new Error('Email and password are required');
-        }
-
-        const user = await UserRepository.getUserByEmail(email);
-
-
-        if (!user) {
-            throw new Error('User not found');
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password).then((res: any) => {
-            return res;
-        });
-
-        if (!isPasswordValid) {
-            throw new Error('Invalid password');
-        }
-
-        return {
-            id: user.id,
-            email: user.email,
-        };
-    }
+    // static async login(email: string, password: string): Promise<Omit<any, "createdAt" | "updatedAt">> {
+    //
+    //     if (!email || !password) {
+    //         throw new Error('Email and password are required');
+    //     }
+    //
+    //     const user = await UserRepository.getUserByEmail(email);
+    //
+    //
+    //     if (!user) {
+    //         throw new Error('User not found');
+    //     }
+    //
+    //     const isPasswordValid = await bcrypt.compare(password, user.password).then((res: any) => {
+    //         return res;
+    //     });
+    //
+    //     if (!isPasswordValid) {
+    //         throw new Error('Invalid password');
+    //     }
+    //
+    //     return {
+    //         id: user.id,
+    //         email: user.email,
+    //     };
+    // }
 
     static verifEmail(email: string): boolean {
         const emailRegex = /\S+@\S+\.\S+/;

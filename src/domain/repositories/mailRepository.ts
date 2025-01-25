@@ -1,5 +1,5 @@
 import BookingModel from "../models/booking.model";
-import UserModel from "../models/user.model";
+import UserModel from "../models/client.model";
 import mailService from "../../infrastructure/mailer/mailService";
 import {formatDataForMail} from "../usecases/formatDataForMail";
 
