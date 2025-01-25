@@ -9,6 +9,7 @@ import 'moment/locale/fr';
 import mailService from "../../infrastructure/mailer/mailService";
 import dotenv from "dotenv";
 import {verifyIfSlotIsAvailable} from "../../domain/usecases/bookingScheduleSlot";
+import Stripe from "stripe";
 dotenv.config();
 
 
@@ -67,6 +68,13 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
                 const isAvailable = await verifyIfSlotIsAvailable(prestationStart, prestationEnd);
 
                 if (!isAvailable) {
+                    // @ts-ignore
+                    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
+                    await stripe.refunds.create({
+                        payment_intent: verifyPayment.session.payment_intent,
+                    });
+
                     // todo : rembourser le client
                     throw new Error('slotNotAvailable');
                 }
