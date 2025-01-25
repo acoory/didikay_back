@@ -9,6 +9,7 @@ import servicesModel from "../../domain/models/services.model";
 import bookingModel from "../../domain/models/booking.model";
 import { createSchedule, filterScheduleIfBusy, updateScheduleForPrestationDuration } from "../../domain/usecases/bookingScheduleSlot";
 import moment from 'moment';
+import DaysOfWeekModel from "../../domain/models/daysOfWeek.model";
 
 
 const router: Router = Router();
@@ -58,8 +59,15 @@ router.post("/", async (req: Request, res: Response) => {
             })
 
     console.log("busy : " , busy);
+    const daysOfWeek = await DaysOfWeekModel.findAll(
+        {
+            where: {
+                closed: true,
+            }
+        }
+    );
 
-    const filterBusy = filterScheduleIfBusy(schedule, busy, 30);
+    const filterBusy = filterScheduleIfBusy(schedule, busy, 30, daysOfWeek, date);
 
     const finalSchedule = updateScheduleForPrestationDuration(filterBusy, nextPrestationDuration);
 

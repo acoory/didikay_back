@@ -10,6 +10,7 @@ import prestationModel from "./prestation.model";
 import BusyDayModel from "./busyDay.model";
 import bookingModel from "./booking.model";
 import PaymentModel from "./payments.models";
+import daysOfWeekModel from "./daysOfWeek.model";
 dotenv.config();
 
 const createDatabase = async () => {
@@ -28,6 +29,7 @@ const createDatabase = async () => {
         await bookingModel.sync({force: true});
         // await ReservationModel.sync({force: true});
         await PaymentModel.sync({force: true});
+        await daysOfWeekModel.sync({force: true});
 
         PaymentModel.belongsTo(ClientModel, {
             foreignKey: 'client_id',
@@ -77,4 +79,5 @@ export  {
     SubprestationModel,
     ServicesModel,
     PrestationModel,
+    daysOfWeekModel,
 };

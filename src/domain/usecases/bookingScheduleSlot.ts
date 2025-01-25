@@ -1,4 +1,7 @@
 import moment from 'moment-timezone';
+import bookingRepository from "../repositories/bookingRepository";
+import bookingModel from "../models/booking.model";
+import {Op} from "@sequelize/core";
 
 const createSchedule = (startSchedule: number, endSchedule:number, date: number) => {
     let schedule = [];
@@ -30,7 +33,7 @@ const createSchedule = (startSchedule: number, endSchedule:number, date: number)
     return schedule;
 };
 
- const filterScheduleIfBusy = (schedule:any, busy:any, timeBeforeNextPrestation:any) => {
+ const filterScheduleIfBusy = (schedule:any, busy:any, timeBeforeNextPrestation:any,daysOfWeek:any, date:any) => {
     busy.forEach((busyTime:any) => {
         schedule.forEach((time:any) => {
             // Ajouter 30 minutes (en millisecondes)
@@ -42,6 +45,18 @@ const createSchedule = (startSchedule: number, endSchedule:number, date: number)
             }
         });
     });
+
+
+    moment.locale("fr");
+    const dayNow = moment(date).format("dddd");
+
+    const isClosed = daysOfWeek.some((day:any) => day.day.toLowerCase() === dayNow)
+
+    if (isClosed) {
+        schedule.forEach((time:any) => {
+            time.busy = true;
+        });
+    }
 
     return schedule;
 };
@@ -74,7 +89,23 @@ const createSchedule = (startSchedule: number, endSchedule:number, date: number)
 
     console.log("schedule", schedule);
 
+
+
     return schedule;
 }
 
-export { createSchedule, filterScheduleIfBusy, updateScheduleForPrestationDuration };
+
+const verifyIfSlotIsAvailable:any = async (start: number, end:number): Promise<boolean> => {
+    const bookings = await bookingModel.findAll({
+        where: {
+            dateTimeStart: {
+                [Op.gte]: start,
+                [Op.lt]: end,
+            },
+        },
+    });
+
+    return bookings.length === 0;
+}
+
+export { createSchedule, filterScheduleIfBusy, updateScheduleForPrestationDuration, verifyIfSlotIsAvailable };

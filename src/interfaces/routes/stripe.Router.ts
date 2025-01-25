@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import e, { Router, Request, Response } from 'express';
 import {stripeCreatePayment} from "../../domain/usecases/stripeCheckout";
 import {stripeVerifyPayment} from "../../domain/usecases/stripeVerifyPayment";
 import clientRepository from "../../domain/repositories/clientRepository";
@@ -8,6 +8,7 @@ import moment from "moment";
 import 'moment/locale/fr';
 import mailService from "../../infrastructure/mailer/mailService";
 import dotenv from "dotenv";
+import {verifyIfSlotIsAvailable} from "../../domain/usecases/bookingScheduleSlot";
 dotenv.config();
 
 
@@ -37,7 +38,7 @@ router.post("/create-checkout-session", async (req: Request, res: Response): Pro
     }
 });
 
-router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Promise<void> => {
+router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Promise<any> => {
     try {
         const { sessionId } = req.params;
 
@@ -61,6 +62,13 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
                     dateTimeEnd: prestationEnd,
                     userId: userRepo.id,
                     data: serviceIdArray
+                }
+
+                const isAvailable = await verifyIfSlotIsAvailable(prestationStart, prestationEnd);
+
+                if (!isAvailable) {
+                    // todo : rembourser le client
+                    throw new Error('slotNotAvailable');
                 }
 
                 const bookingRepo:any = await bookingRepository.createBooking(bookingData, t);
@@ -93,6 +101,11 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
 
     } catch (error) {
         console.error("Error verifying payment:", error);
+        // @ts-ignore
+
+        if(error.message === 'slotNotAvailable') {
+            return res.redirect(303, `${process.env.CLIENT_URL}/slot-not-available`);
+        }
         // @ts-ignore
         res.status(500).json({ error: error.message });
     }
