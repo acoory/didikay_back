@@ -1,5 +1,6 @@
 import { DataTypes } from '@sequelize/core';
 import sequelize from '../../config/database';
+import {ClientModel} from "./index";
 
 const PaymentModel = sequelize.define('payment', {
     id: {
@@ -18,7 +19,12 @@ const PaymentModel = sequelize.define('payment', {
         },
     clientId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        references: {
+            model: ClientModel,
+            key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
     },
     paymentIntent: {
         type: DataTypes.STRING,

@@ -39,6 +39,11 @@ const createDatabase = async () => {
             as: 'payments',
         });
 
+        PaymentModel.belongsTo(ClientModel, {
+            foreignKey: 'clientId',
+            as: 'client',
+        });
+
         PrestationModel.hasMany(SubprestationModel, {
             foreignKey: 'prestation_id',
             as: 'subprestations',
