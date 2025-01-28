@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation d'Annulation du Rendez-vous</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #0078D7;
+            color: #ffffff;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            color: #333333;
+        }
+        .content p {
+            margin-bottom: 15px;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #666666;
+        }
+        .footer a {
+            color: #0078D7;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Confirmation d'Annulation du Rendez-vous</h1>
+    </div>
+    <div class="content">
+        <p>Bonjour,</p>
+        <p>Nous vous confirmons que le rendez-vous a bien été annulé avec les détails suivants :</p>
+        <ul>
+            <li><strong>Nom du Client : </strong><%= client %></li>
+            <li><strong>Date du Rendez-vous : </strong><%= date %></li>
+        </ul>
+        <p>Le remboursement de l'acompte sera effectué automatiquement sur le moyen de paiement utilisé lors de la réservation.</p>
+        <p>Nous restons à votre disposition pour toute question.</p>
+    </div>
+    <div class="footer">
+        <p>Merci de votre confiance.</p>
+    </div>
+</div>
+</body>
+</html>

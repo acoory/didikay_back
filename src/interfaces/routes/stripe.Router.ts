@@ -10,6 +10,7 @@ import mailService from "../../infrastructure/mailer/mailService";
 import dotenv from "dotenv";
 import {verifyIfSlotIsAvailable} from "../../domain/usecases/bookingScheduleSlot";
 import Stripe from "stripe";
+import paymentsModels from "../../domain/models/payments.models";
 dotenv.config();
 
 
@@ -45,6 +46,8 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
 
         const verifyPayment = await stripeVerifyPayment(sessionId);
 
+        const code = Math.random().toString(36).substring(7);
+
         if(verifyPayment.success) {
 
             const transaction = await sequelize.transaction(async (t:any) => {
@@ -55,15 +58,6 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
 
                 const prestationStart = moment(JSON.parse(booking).start).valueOf();
                 const prestationEnd = moment(JSON.parse(booking).end).add(prestationDuration, 'minutes').valueOf();
-
-                const userRepo:any = await clientRepository.createUser(JSON.parse(client), t);
-
-                const bookingData = {
-                    dateTimeStart: prestationStart,
-                    dateTimeEnd: prestationEnd,
-                    userId: userRepo.id,
-                    data: serviceIdArray
-                }
 
                 const isAvailable = await verifyIfSlotIsAvailable(prestationStart, prestationEnd);
 
@@ -79,21 +73,43 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
                     throw new Error('slotNotAvailable');
                 }
 
+                // 1 - Create user
+                const userRepo:any = await clientRepository.createUser(JSON.parse(client), t);
+
+                const createPayment:any = await paymentsModels.create({
+                    amount: 2000,
+                    deposit: 20,
+                    clientId: userRepo.id,
+                    paymentIntent: verifyPayment.session.payment_intent,
+                });
+
+                const bookingData = {
+                    dateTimeStart: prestationStart,
+                    dateTimeEnd: prestationEnd,
+                    userId: userRepo.id,
+                    data: serviceIdArray,
+                    paymentId: createPayment.id,
+                    code: code
+                }
+
+                // 2 - Create booking
                 const bookingRepo:any = await bookingRepository.createBooking(bookingData, t);
 
-                return { booking: bookingRepo, client: userRepo };
+                return { booking: bookingRepo, client: userRepo, payment: createPayment };
             });
 
             if(transaction) {
 
-                const { client, booking } = transaction
+                const { client, booking, payment } = transaction
 
                 moment().locale('fr');
                 const date = moment(booking.dateTimeStart).format("dddd D MMMM [à] HH[h]mm");
 
                 await mailService.sendMailConfirmation(client.email, "Confirmation de rendez-vous DIDIKAY", "Test", {
                     client: client.firstname + " " + client.lastname,
-                    date: date
+                    date: date,
+                    code: code,
+                    cancelUrl: `${process.env.CLIENT_URL}/cancel/${booking.id}`
                 });
                 // @ts-ignore
                 await mailService.sendMailConfirmationPrestataire(process.env.NODEMAILER_USER, "Un nouveau rendez-vous a été pris", "Test", {

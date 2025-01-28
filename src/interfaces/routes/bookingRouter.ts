@@ -10,6 +10,13 @@ import bookingModel from "../../domain/models/booking.model";
 import { createSchedule, filterScheduleIfBusy, updateScheduleForPrestationDuration } from "../../domain/usecases/bookingScheduleSlot";
 import moment from 'moment';
 import DaysOfWeekModel from "../../domain/models/daysOfWeek.model";
+import PaymentModel from "../../domain/models/payments.models";
+import {col} from "sequelize";
+import mailService from "../../infrastructure/mailer/mailService";
+import Stripe from "stripe";
+import PaymentsModels from "../../domain/models/payments.models";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 
 const router: Router = Router();
@@ -292,6 +299,74 @@ router.get("/reservation/:id", async (req: Request, res: Response) => {
     }
 );
 
+
+router.delete("/cancel/:id/:code", async (req: Request, res: Response):Promise<any> => {
+    const { id, code } = req.params;
+
+    try {
+        const booking:any = await bookingModel.findOne({
+            where: {
+                id: id,
+            },
+            include: [
+                {
+                model: ClientModel,
+                required: true,
+            },
+                {
+                    model: PaymentModel,
+                    required: true,
+                }]
+        }
+        );
+
+        console.log("payment de booking : " , booking);
+
+        if(!booking) {
+            return res.status(404).json({ message: 'Réservation non trouvée.' });
+        }
+
+
+        if(booking.code !== code) {
+            return res.status(403).json({ message: 'Code de confirmation invalide.' });
+        }
+
+        const refund = await stripe.refunds.create({
+            payment_intent: booking.payment.paymentIntent,
+        });
+
+        if(!refund) {
+            return res.status(500).json({ message: 'Erreur lors du remboursement.' });
+        }
+
+        const deleted = await bookingModel.destroy({
+            where: {
+                id: id,
+            },
+        });
+
+        moment().locale('fr');
+        const date = moment(booking.dateTimeStart).format("dddd D MMMM [à] HH[h]mm");
+
+        await mailService.sendCancelClient(booking.client.email, 'Votre réservation a été annulée avec succès.', 'test', {
+            client: booking.client.firstname + ' ' + booking.client.lastname,
+            date: date,
+        });
+
+        await mailService.sendCancelPrestataire(process.env.NODEMAILER_USER as string, 'Un rendez-vous a été annulé', 'test', {
+            client: booking.client.firstname + ' ' + booking.client.lastname,
+            date: date,
+        })
+
+
+
+        return res.status(200).json({ message: 'Réservation annulée avec succès.', });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+
+})
 
 
 

@@ -51,6 +51,7 @@
         }
         .button.cancel {
             background-color: #dc3545;
+            color: #ffffff;
         }
         .footer {
             background-color: #f1f1f1;
@@ -62,6 +63,15 @@
         .footer a {
             color: #0078D7;
             text-decoration: none;
+        }
+
+        .code {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -77,8 +87,15 @@
             <li><strong>Date : </strong><%= date %></li>
         </ul>
         <p>Si vous souhaitez  annuler ce rendez-vous, veuillez cliquer sur le bouton ci-dessous.</p>
+        <div >
+            <p><strong>Code de d'annulation : </strong></p>
+            <br>
+            <p class="code"><%= code %></p>
+        </div>
+
+
         <div class="button-container">
-            <a href="[Lien pour Annuler]" class="button cancel">Annuler le Rendez-vous</a>
+            <a href="<%= cancelUrl %>" target="_blank" class="button cancel">Annuler le Rendez-vous</a>
         </div>
         <p>Nous sommes impatients de vous rencontrer. Si vous avez des questions, n'hésitez pas à nous contacter.</p>
         <p>Merci,<br>L'équipe [Nom de votre entreprise]</p>

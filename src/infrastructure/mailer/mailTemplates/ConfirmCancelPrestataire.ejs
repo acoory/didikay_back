@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annulation de la Prestation par le Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .header {
+            background-color: #D32F2F;
+            color: #ffffff;
+            padding: 15px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 20px;
+            color: #333333;
+        }
+        .content p {
+            margin-bottom: 15px;
+        }
+        .footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #666666;
+        }
+        .footer a {
+            color: #D32F2F;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Annulation de la Prestation par le Client</h1>
+    </div>
+    <div class="content">
+        <p>Bonjour,</p>
+        <p>Nous vous informons que le client a annulé une prestation. Voici les détails de l'annulation :</p>
+        <ul>
+            <li><strong>Nom du Client : </strong><%= client %></li>
+            <li><strong>Date de la Prestation : </strong><%= date %></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

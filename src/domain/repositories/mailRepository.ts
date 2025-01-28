@@ -16,11 +16,11 @@ class mailRepository {
 
       const formatData = formatDataForMail(data);
 
-      const sendMail = await mailService.sendMailConfirmation(data.user.email, 'Confirmation réservation', 'Your booking has been confirmed', formatData);
-       // @ts-ignore
-      if(!sendMail) {
-        throw new Error('Failed to send email');
-        }
+      // const sendMail = await mailService.sendMailConfirmation(data.user.email, 'Confirmation réservation', 'Your booking has been confirmed', formatData);
+      //  // @ts-ignore
+      // if(!sendMail) {
+      //   throw new Error('Failed to send email');
+      //   }
 
        return true;
     } catch (e: any) {

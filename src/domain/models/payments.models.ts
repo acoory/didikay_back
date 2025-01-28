@@ -20,8 +20,8 @@ const PaymentModel = sequelize.define('payment', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    bookingId: {
-        type: DataTypes.INTEGER,
+    paymentIntent: {
+        type: DataTypes.STRING,
         allowNull: false,
     },
 }, {

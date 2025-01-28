@@ -9,6 +9,8 @@ router.get("/", async (req: Request, res: Response) => {
     await mailService.sendMailConfirmation("joelle42@ethereal.email", "Test", "Test", {
         client: "Joelle",
         date: "2022-12-25",
+        code: "123456",
+        cancelUrl: "https://www.google.com",
         // hour: "12:00",
         // location: "Paris"
     });

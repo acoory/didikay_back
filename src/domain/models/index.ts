@@ -26,18 +26,16 @@ const createDatabase = async () => {
         await ServicesModel.sync({force: true});
         await BusyDayModel.sync({force: true});
         await ClientModel.sync({force: true});
+        await PaymentModel.sync({force: true});
         await bookingModel.sync({force: true});
         // await ReservationModel.sync({force: true});
-        await PaymentModel.sync({force: true});
+
         await daysOfWeekModel.sync({force: true});
 
-        PaymentModel.belongsTo(ClientModel, {
-            foreignKey: 'client_id',
-            as: 'client',
-        });
+
 
         ClientModel.hasMany(PaymentModel, {
-            foreignKey: 'client_id',
+            foreignKey: 'clientId',
             as: 'payments',
         });
 
