@@ -10,6 +10,7 @@ type EmailConfirmationData = {
     code: string;
     cancelUrl: string;
     services: any;
+    total?: number;
     // hour: string;
     // location: string;
 }

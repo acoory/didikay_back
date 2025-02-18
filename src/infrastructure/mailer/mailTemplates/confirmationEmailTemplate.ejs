@@ -64,7 +64,6 @@
             color: #0078D7;
             text-decoration: none;
         }
-
         .code {
             background-color: #f1f1f1;
             padding: 10px;
@@ -72,6 +71,12 @@
             margin-bottom: 20px;
             font-size: 14px;
             font-weight: bold;
+        }
+        .modalite {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -87,27 +92,25 @@
             <li><strong>Date : </strong><%= date %></li>
             <li><strong>Prestation(s) choisie(s) :</strong>
                 <ul>
-                    <% services.forEach(function(service) { %>
-                        <li><strong><%= service.name %></strong> - <%= service.description %> - <%= service.price %> EUR (Durée : <%= service.duration_minutes %> minutes)</li>
+                    <%  services.forEach(function(service) { %>
+                    <li><strong><%= service.name %></strong> - <%= service.description %> - <%= service.price %> EUR (Durée : <%= service.duration_minutes %> minutes)</li>
                     <% }); %>
                 </ul>
             </li>
+            <li><strong>Total : </strong><%= total %> EUR</li>
         </ul>
         <p>Si vous souhaitez annuler ce rendez-vous, veuillez cliquer sur le bouton ci-dessous.</p>
-        <div >
+        <div>
             <p><strong>Code d'annulation : </strong></p>
-            <br>
             <p class="code"><%= code %></p>
         </div>
-
         <div class="button-container">
             <a href="<%= cancelUrl %>" target="_blank" class="button cancel">Annuler le Rendez-vous</a>
         </div>
-        <p>Nous sommes impatients de vous rencontrer. Si vous avez des questions, n'hésitez pas à nous contacter.</p>
-        <p>Merci,<br>L'équipe [Nom de votre entreprise]</p>
+        <p class="modalite"><strong>Modalité d'annulation :</strong><br>
+            Si vous annulez votre rendez-vous plus de 24 heures à l'avance, nous vous rembourserons le montant de l'acompte. En revanche, après ce délai, aucun remboursement ne pourra être effectué.</p>
     </div>
     <div class="footer">
-        <p>Ce message vous a été envoyé par <a href="[Site Web de l'entreprise]">[Nom de l'entreprise]</a>.</p>
         <p>Si vous n'êtes pas à l'origine de cette demande, veuillez ignorer cet email.</p>
     </div>
 </div>

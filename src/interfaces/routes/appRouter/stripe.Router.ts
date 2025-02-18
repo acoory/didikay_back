@@ -110,7 +110,8 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
                     date: date,
                     code: code,
                     cancelUrl: `${process.env.CLIENT_URL}/cancel/${booking.id}`,
-                    services: JSON.parse(transaction.services)
+                    services: JSON.parse(transaction.services),
+                    total: JSON.parse(transaction.services).reduce((acc:any, item:any) => acc + parseInt(item.price), 0)
                 });
                 // @ts-ignore
                 await mailService.sendMailConfirmationPrestataire(process.env.NODEMAILER_USER, "Un nouveau rendez-vous a été pris", "Test", {
