@@ -1,5 +1,5 @@
 import {Router, Request, Response} from 'express';
-import prestationRepository from "../../domain/repositories/prestationRepository";
+import prestationRepository from "../../../domain/repositories/prestationRepository";
 
 const router: Router = Router();
 

@@ -1,20 +1,20 @@
 import {Router, Request, Response} from 'express';
-import bookingRepository from "../../domain/repositories/bookingRepository";
-import getAvailableSlots from "../../domain/usecases/getAvailableSlots";
-import sequelize from '../../config/database';
-import {ClientModel} from "../../domain/models";
-import ServiceModel from "../../domain/models/services.model";
+import bookingRepository from "../../../domain/repositories/bookingRepository";
+import getAvailableSlots from "../../../domain/usecases/getAvailableSlots";
+import sequelize from '../../../config/database';
+import {ClientModel} from "../../../domain/models";
+import ServiceModel from "../../../domain/models/services.model";
 import {Op} from "@sequelize/core";
-import servicesModel from "../../domain/models/services.model";
-import bookingModel from "../../domain/models/booking.model";
-import { createSchedule, filterScheduleIfBusy, updateScheduleForPrestationDuration } from "../../domain/usecases/bookingScheduleSlot";
+import servicesModel from "../../../domain/models/services.model";
+import bookingModel from "../../../domain/models/booking.model";
+import { createSchedule, filterScheduleIfBusy, updateScheduleForPrestationDuration } from "../../../domain/usecases/bookingScheduleSlot";
 import moment from 'moment';
-import DaysOfWeekModel from "../../domain/models/daysOfWeek.model";
-import PaymentModel from "../../domain/models/payments.models";
+import DaysOfWeekModel from "../../../domain/models/daysOfWeek.model";
+import PaymentModel from "../../../domain/models/payments.models";
 import {col} from "sequelize";
-import mailService from "../../infrastructure/mailer/mailService";
+import mailService from "../../../infrastructure/mailer/mailService";
 import Stripe from "stripe";
-import PaymentsModels from "../../domain/models/payments.models";
+import PaymentsModels from "../../../domain/models/payments.models";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 

@@ -1,6 +1,6 @@
 import {Router, Request, Response} from 'express';
-import UserService from '../../domain/services/userService';
-import JwtService from "../../domain/services/jwtService";
+import UserService from '../../../domain/services/userService';
+import JwtService from "../../../domain/services/jwtService";
 
 const bcrypt = require('bcrypt');
 

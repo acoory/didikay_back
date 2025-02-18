@@ -9,6 +9,7 @@ type EmailConfirmationData = {
     date: string;
     code: string;
     cancelUrl: string;
+    services: any;
     // hour: string;
     // location: string;
 }
@@ -31,7 +32,7 @@ class mailService {
     async sendMailConfirmation(to: string, subject: string, message: string, data: EmailConfirmationData) {
         try {
 
-            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailTemplates/confirmationEmailTemplate.ejs', data);
+            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailtemplates/confirmationEmailTemplate.ejs', data);
 
             const info = await this.transporter.sendMail({
                 from: process.env.NODEMAILER_USER,
@@ -51,7 +52,7 @@ class mailService {
     async sendMailConfirmationPrestataire(to: string, subject: string, message: string, data: EmailConfirmationData) {
         try {
 
-            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailTemplates/confirmEmailForPrestataire.ejs', data);
+            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailtemplates/confirmEmailForPrestataire.ejs', data);
 
             const info = await this.transporter.sendMail({
                 from: process.env.NODEMAILER_USER,
@@ -71,7 +72,7 @@ class mailService {
     async sendCancelClient(to: string, subject: string, message: string, data: any) {
         try {
 
-            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailTemplates/ConfirmCancelClient.ejs', data);
+            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailtemplates/ConfirmCancelClient.ejs', data);
 
             const info = await this.transporter.sendMail({
                 from: process.env.NODEMAILER_USER,
@@ -91,7 +92,7 @@ class mailService {
     async sendCancelPrestataire(to: string, subject: string, message: string, data: any) {
         try {
 
-            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailTemplates/ConfirmCancelPrestataire.ejs', data);
+            var html = await ejs.renderFile('/usr/src/app/src/infrastructure/mailer/mailtemplates/ConfirmCancelPrestataire.ejs', data);
 
             const info = await this.transporter.sendMail({
                 from: process.env.NODEMAILER_USER,

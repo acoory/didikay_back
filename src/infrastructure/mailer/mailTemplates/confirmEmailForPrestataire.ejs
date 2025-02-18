@@ -61,6 +61,13 @@
         <ul>
             <li><strong>Nom du Client : </strong><%= client %></li>
             <li><strong>Date : </strong><%= date %></li>
+            <li><strong>Prestation(s) choisie(s) :</strong>
+                <ul>
+                    <% services.forEach(function(service) { %>
+                        <li><strong><%= service.name %></strong> - <%= service.description %> - <%= service.price %> EUR (Durée : <%= service.duration_minutes %> minutes)</li>
+                    <% }); %>
+                </ul>
+            </li>
         </ul>
     </div>
 </div>

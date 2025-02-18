@@ -85,14 +85,20 @@
         <p>Votre rendez-vous a bien été confirmé avec les détails suivants :</p>
         <ul>
             <li><strong>Date : </strong><%= date %></li>
+            <li><strong>Prestation(s) choisie(s) :</strong>
+                <ul>
+                    <% services.forEach(function(service) { %>
+                        <li><strong><%= service.name %></strong> - <%= service.description %> - <%= service.price %> EUR (Durée : <%= service.duration_minutes %> minutes)</li>
+                    <% }); %>
+                </ul>
+            </li>
         </ul>
-        <p>Si vous souhaitez  annuler ce rendez-vous, veuillez cliquer sur le bouton ci-dessous.</p>
+        <p>Si vous souhaitez annuler ce rendez-vous, veuillez cliquer sur le bouton ci-dessous.</p>
         <div >
-            <p><strong>Code de d'annulation : </strong></p>
+            <p><strong>Code d'annulation : </strong></p>
             <br>
             <p class="code"><%= code %></p>
         </div>
-
 
         <div class="button-container">
             <a href="<%= cancelUrl %>" target="_blank" class="button cancel">Annuler le Rendez-vous</a>

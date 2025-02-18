@@ -11,6 +11,7 @@ import BusyDayModel from "./busyDay.model";
 import bookingModel from "./booking.model";
 import PaymentModel from "./payments.models";
 import daysOfWeekModel from "./daysOfWeek.model";
+import adminModel from "./admin.model";
 dotenv.config();
 
 const createDatabase = async () => {
@@ -28,11 +29,10 @@ const createDatabase = async () => {
         await ClientModel.sync({force: true});
         await PaymentModel.sync({force: true});
         await bookingModel.sync({force: true});
+        await adminModel.sync({force: true});
         // await ReservationModel.sync({force: true});
 
         await daysOfWeekModel.sync({force: true});
-
-
 
         ClientModel.hasMany(PaymentModel, {
             foreignKey: 'clientId',

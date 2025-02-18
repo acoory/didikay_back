@@ -1,10 +1,11 @@
 import express, {Express, Request, Response} from "express";
 import dotenv from "dotenv";
 import sequelize from "./src/config/database";
-import appRouter from "./src/app";
+import appRouter from "./src/appRouter";
 import middleware from "./src/interfaces/middleware/authMiddleware";
 import {createDatabase} from './src/domain/models/index';
 import helmet from "helmet";
+import dashboardRouter from "./src/dashboardRouter";
 var cors = require('cors')
 
 dotenv.config();
@@ -16,7 +17,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cors({
-    origin: 'http://localhost:3001', // Autorise uniquement cette origine
+    origin: ['http://localhost:3001', 'http://localhost:3039', 'http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
     allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
 }));
@@ -24,7 +25,8 @@ app.use(cors({
 app.use(helmet());
 // Route de l'application
 app.use('/api/client/', appRouter);
-app.use('/api/dashboard/', middleware, appRouter);
+// app.use('/api/dashboard/', middleware, dashboardRouter);
+app.use('/api/dashboard/', dashboardRouter);
 
 // Vérifier si la création de la base de données est activée
 const createDb = process.env.CREATE_DB === 'true';

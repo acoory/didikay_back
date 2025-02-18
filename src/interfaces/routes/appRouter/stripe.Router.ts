@@ -1,16 +1,16 @@
 import e, { Router, Request, Response } from 'express';
-import {stripeCreatePayment} from "../../domain/usecases/stripeCheckout";
-import {stripeVerifyPayment} from "../../domain/usecases/stripeVerifyPayment";
-import clientRepository from "../../domain/repositories/clientRepository";
-import sequelize from "../../config/database";
-import bookingRepository from "../../domain/repositories/bookingRepository";
+import {stripeCreatePayment} from "../../../domain/usecases/stripeCheckout";
+import {stripeVerifyPayment} from "../../../domain/usecases/stripeVerifyPayment";
+import clientRepository from "../../../domain/repositories/clientRepository";
+import sequelize from "../../../config/database";
+import bookingRepository from "../../../domain/repositories/bookingRepository";
 import moment from "moment";
 import 'moment/locale/fr';
-import mailService from "../../infrastructure/mailer/mailService";
+import mailService from "../../../infrastructure/mailer/mailService";
 import dotenv from "dotenv";
-import {verifyIfSlotIsAvailable} from "../../domain/usecases/bookingScheduleSlot";
+import {verifyIfSlotIsAvailable} from "../../../domain/usecases/bookingScheduleSlot";
 import Stripe from "stripe";
-import paymentsModels from "../../domain/models/payments.models";
+import paymentsModels from "../../../domain/models/payments.models";
 dotenv.config();
 
 
@@ -95,7 +95,7 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
                 // 2 - Create booking
                 const bookingRepo:any = await bookingRepository.createBooking(bookingData, t);
 
-                return { booking: bookingRepo, client: userRepo, payment: createPayment };
+                return { booking: bookingRepo, client: userRepo, payment: createPayment, services: services };
             });
 
             if(transaction) {
@@ -109,12 +109,14 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
                     client: client.firstname + " " + client.lastname,
                     date: date,
                     code: code,
-                    cancelUrl: `${process.env.CLIENT_URL}/cancel/${booking.id}`
+                    cancelUrl: `${process.env.CLIENT_URL}/cancel/${booking.id}`,
+                    services: JSON.parse(transaction.services)
                 });
                 // @ts-ignore
                 await mailService.sendMailConfirmationPrestataire(process.env.NODEMAILER_USER, "Un nouveau rendez-vous a été pris", "Test", {
                     client: client.firstname + " " + client.lastname,
-                    date: date
+                    date: date,
+                    services: JSON.parse(transaction.services)
                 });
             }
 
