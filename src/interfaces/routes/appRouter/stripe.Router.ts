@@ -132,6 +132,8 @@ router.get("/verify-payment/:sessionId", async (req: Request, res: Response): Pr
 
         if(error.message === 'slotNotAvailable') {
             return res.redirect(303, `${process.env.CLIENT_URL}/slot-not-available`);
+
+            // Todo : refund client
         }
         // @ts-ignore
         res.status(500).json({ error: error.message });
