@@ -9,7 +9,7 @@ const createSchedule = (startSchedule: number, endSchedule:number, date: number)
     let baseDate = moment.tz(moment.unix(date), "Europe/Paris");
 
     let start = baseDate.clone().set("hour", startSchedule).set("minute", 0).set("second", 0).set("millisecond", 0);
-    let end = baseDate.clone().set("hour", endSchedule).set("minute", 0).set("second", 0).set("millisecond", 0);
+    let end = baseDate.clone().set("hour", endSchedule).set("minute", 30).set("second", 0).set("millisecond", 0);
 
     console.log("Horaire ( début, fin )", {
         start: start.format("YYYY-MM-DD HH:mm:ss"),

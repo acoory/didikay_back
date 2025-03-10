@@ -8,13 +8,11 @@ module.exports = {
      *
      * Example:
      */
-     await queryInterface.bulkInsert('prestations', [{
-         id: 1,
-       name: 'Départ de locks',
-     }, {
-         id: 2,
-       name: 'Coiffure',
-     }], {});
+     await queryInterface.bulkInsert('prestations', [
+         { id: 1, name: 'Départ de locks' },
+         { id: 2, name: 'Locks' },
+         { id: 3, name: 'Formule cheveux court' }
+     ], {});
 
   },
 

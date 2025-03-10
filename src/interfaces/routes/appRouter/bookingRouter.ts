@@ -50,11 +50,12 @@ router.post("/", async (req: Request, res: Response) => {
     const { date, nextPrestationDuration } = req.body;
 
     const startOfDay = moment(date).startOf('day');
-    console.log("startOfDay : " , startOfDay);
     const endOfDay = moment(date).endOf('day');
-    console.log("endOfDay : " , endOfDay);
 
-    const schedule = createSchedule(8, 18, date / 1000);
+    // dateOfPrestation in milliseconds
+    const dateOfPrestation = date / 1000;
+
+    const schedule = createSchedule(9, 19, dateOfPrestation);
 
     const busy = await bookingModel.findAll({
                 where: {

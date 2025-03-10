@@ -13,11 +13,22 @@ module.exports = {
        name: 'Racine',
         prestation_id: 1,
      },
-        {
-          id: 2,
-          name: 'Coiffure',
-          prestation_id: 1,
-        }], {});
+          {
+              id: 2,
+              name: 'Reprise racine',
+              prestation_id: 2,
+          },
+          {
+              id: 3,
+              name: 'Coiffure',
+              prestation_id: 2,
+          },
+          {
+              id: 4,
+              name: 'Cheveux Courts',
+              prestation_id: 3,
+          }
+        ], {});
 
   },
 

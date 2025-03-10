@@ -8,7 +8,7 @@ import BookingModel from '../models/booking.model'
  */
 export async function getAvailableSlots(date: Date, bookingModel: any) {
     const startHour = 9;
-    const endHour = 18;
+    const endHour = 19;
     const intervalHours = 2;
 
     const slots = [];
