@@ -28,7 +28,7 @@ router.post("/create-checkout-session", async (req: Request, res: Response): Pro
 
         // const { item } = req.body;
 
-        const createPayment = await stripeCreatePayment(devis, formData,booking );
+        const createPayment = await stripeCreatePayment(devis, formData,booking);
 
         return res.status(200).json({ url: createPayment.url });
         // return res.redirect(303, createPayment.url);

@@ -12,6 +12,14 @@ export const stripeCreatePayment = async (items: any, formData:any, booking:any)
 
    try {
 
+       const total = items.reduce((acc:any, item:any) => acc + parseInt(item.price), 0);
+       console.log("Total:", total);
+       const deposit = total >= 50 ? total * 0.4 : 10;
+         console.log("Deposit:", deposit);
+
+       // @ts-ignore
+       const sanitizedItems = items.map(({ description, ...rest }) => rest);
+
        return await stripe.checkout.sessions.create({
              payment_method_types: ['card'],
              line_items: [...items.map((item:any) => {
@@ -31,7 +39,9 @@ export const stripeCreatePayment = async (items: any, formData:any, booking:any)
                         product_data: {
                             name: "Acompte",
                         },
-                        unit_amount: 2000,
+                        // unit_amount: 2000,
+                        // items.reduce is superior to 5000 account for the 20% deposit of the total amount or is items.reduce is inferior to 5000 account for the 1000 deposit
+                        unit_amount: deposit * 100,
                     },
                     quantity: 1,
              }],
@@ -40,7 +50,7 @@ export const stripeCreatePayment = async (items: any, formData:any, booking:any)
              metadata: {
                     client: JSON.stringify(formData),
                     booking: JSON.stringify(booking),
-                    services: JSON.stringify(items),
+                    services: JSON.stringify(sanitizedItems),
              },
              success_url: `${process.env.SERVER_URL}/api/client/stripe/verify-payment/{CHECKOUT_SESSION_ID}`,
              cancel_url: `${process.env.CLIENT_URL}/cancel`,

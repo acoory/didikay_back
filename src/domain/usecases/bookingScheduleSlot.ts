@@ -47,16 +47,17 @@ const createSchedule = (startSchedule: number, endSchedule:number, date: number)
     });
 
 
-    moment.locale("fr");
-    const dayNow = moment(date).format("dddd");
-
-    const isClosed = daysOfWeek.some((day:any) => day.day.toLowerCase() === dayNow)
-
-    if (isClosed) {
-        schedule.forEach((time:any) => {
-            time.busy = true;
-        });
-    }
+    // moment.locale("fr");
+    // const dayNow = moment(date).format("dddd");
+    //  console.log("dayNow", dayNow);
+    //
+    // const isClosed = daysOfWeek.some((day:any) => day.day.toLowerCase() === dayNow)
+    //
+    // if (isClosed) {
+    //     schedule.forEach((time:any) => {
+    //         time.busy = true;
+    //     });
+    // }
 
     return schedule;
 };
@@ -96,6 +97,10 @@ const createSchedule = (startSchedule: number, endSchedule:number, date: number)
 
 
 const verifyIfSlotIsAvailable:any = async (start: number, end:number): Promise<boolean> => {
+    console.log("#####################");
+    console.log("start", start);
+    console.log("end", end);
+    console.log("#####################");
     const bookings = await bookingModel.findAll({
         where: {
             dateTimeStart: {

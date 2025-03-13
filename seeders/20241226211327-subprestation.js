@@ -27,7 +27,17 @@ module.exports = {
               id: 4,
               name: 'Cheveux Courts',
               prestation_id: 3,
-          }
+          },
+            {
+                id: 5,
+                name: 'Cheveux Mi-longs',
+                prestation_id: 4,
+            },
+          {
+              id: 6,
+              name: 'Cheveux Longs',
+              prestation_id: 5,
+          },
         ], {});
 
   },

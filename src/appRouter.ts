@@ -6,6 +6,7 @@ import mailRouter from "./interfaces/routes/appRouter/mailRouter";
 import stripeRouter from "./interfaces/routes/appRouter/stripe.Router";
 import prestationRouter from "./interfaces/routes/appRouter/prestationRouter";
 import adminRouter from "./interfaces/routes/dashboardRouter/adminRouter";
+import dayOfWeekRouter from "./interfaces/routes/appRouter/dayOfWeek.Router";
 
 const appRouter: Express = express();
 
@@ -16,6 +17,7 @@ appRouter.use(urlencoded({extended: true}));
 
 appRouter.use('/user', userRoutes);
 appRouter.use('/booking', bookingRoutes);
+appRouter.use('/dayofweek', dayOfWeekRouter);
 appRouter.use('/mail', mailRouter);
 appRouter.use("/stripe", stripeRouter);
 appRouter.use("/prestation", prestationRouter);

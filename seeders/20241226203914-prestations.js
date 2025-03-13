@@ -11,7 +11,9 @@ module.exports = {
      await queryInterface.bulkInsert('prestations', [
          { id: 1, name: 'Départ de locks' },
          { id: 2, name: 'Locks' },
-         { id: 3, name: 'Formule cheveux court' }
+         { id: 3, name: 'Formule cheveux court' },
+         { id: 4, name: 'Formule cheveux mi-long' },
+         { id: 5, name: 'Formule cheveux long' }
      ], {});
 
   },

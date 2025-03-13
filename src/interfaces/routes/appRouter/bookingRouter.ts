@@ -55,6 +55,10 @@ router.post("/", async (req: Request, res: Response) => {
     // dateOfPrestation in milliseconds
     const dateOfPrestation = date / 1000;
 
+    //log dateOfPrestation to french time
+    console.log("Date de la prestation : " , moment.unix(dateOfPrestation).format('YYYY-MM-DD HH:mm:ss'));
+    console.log("Temp de la prestation : " , dateOfPrestation);
+
     const schedule = createSchedule(9, 19, dateOfPrestation);
 
     const busy = await bookingModel.findAll({
@@ -66,7 +70,7 @@ router.post("/", async (req: Request, res: Response) => {
                 },
             })
 
-    console.log("busy : " , busy);
+    // console.log("busy : " , busy);
     const daysOfWeek = await DaysOfWeekModel.findAll(
         {
             where: {

@@ -26,7 +26,7 @@ module.exports = {
           name: 'Vanille',
           description: 'Le prix de votre prestation peut varier en fonction de la longueur et de la masse capillaire. Un ajustement pourra être appliqué après évaluation en salon.',
           price: 70,
-          duration_minutes: 20,
+          duration_minutes: 120,
           subprestation_id: 1,
         },
           {
@@ -104,14 +104,14 @@ module.exports = {
           },
           // Formules coupe : cheveux courts
           {
-              name: 'Shampoing + Coupe + Brushing',
+              name: 'Coupe + Shampoing + Brushing',
               description: 'Pour une coupe nette et un brushing léger.',
               price: 40,
               duration_minutes: 45,
               subprestation_id: 4,
           },
           {
-              name: 'Shampoing + Coupe + Séchage Naturel',
+              name: 'Coupe + Shampoing + Séchage Naturel',
               description: 'Pour un look naturel avec une coupe fraîche.',
               price: 30,
               duration_minutes: 30,
@@ -144,6 +144,80 @@ module.exports = {
               price: 40,
               duration_minutes: 40,
               subprestation_id: 4,
+          },
+          // Formules coupe : cheveux mi-longs
+          {
+              name: 'Coupe + Shampoing + Brushing',
+              description: 'Pour une coupe nette et un brushing léger.',
+              price: 45,
+              duration_minutes: 60,
+              subprestation_id: 5,
+          },
+          {
+              name: 'Coupe + Shampoing + Séchage Naturel',
+              description: 'Pour un look naturel avec une coupe fraîche.',
+              price: 40,
+              duration_minutes: 60,
+              subprestation_id: 5,
+          },
+          {
+              name: 'Coupe + Shampoing + Transformation + Brushing',
+              description: 'Pour une coupe radicale et un brushing qui met en valeur le nouveau look.',
+              price: 52,
+              duration_minutes: 60,
+              subprestation_id: 5,
+          },
+          {
+              name: 'Coupe + Shampoing + Transformation + Séchage Naturel',
+              description: 'Une coupe qui change tout, avec un séchage naturel pour un effet frais et léger.',
+              price: 47,
+              duration_minutes: 60,
+              subprestation_id: 5,
+          },
+          {
+              name: 'Bar à Coupe – Coupe express sur cheveux secs',
+              description: 'Sans shampoing, sans séchage\n' +
+                  'Une coupe rapide sur cheveux propres et secs, uniquement pour entretenir votre coupe. Pas de transformation, juste un rafraîchissement !',
+              price: 30,
+              duration_minutes: 30,
+              subprestation_id: 5,
+          },
+          // Formules coupe : cheveux longs
+          {
+              name: 'Coupe + Shampoing + Brushing',
+              description: 'Pour une coupe nette et un brushing léger.',
+              price: 50,
+              duration_minutes: 90,
+              subprestation_id: 6,
+          },
+          {
+              name: 'Coupe + Shampoing + Séchage Naturel',
+              description: 'Parfait pour nourrir et couper tout en gardant un style naturel.',
+              price: 40,
+              duration_minutes: 60,
+              subprestation_id: 6,
+          },
+          {
+              name: 'Coupe Transformation + Shampoing + Brushing',
+              description: 'Pour une coupe qui marque un changement complet avec un brushing stylisé.',
+              price: 57,
+              duration_minutes: 90,
+              subprestation_id: 6,
+          },
+          {
+              name: 'Coupe Transformation + Shampoing + Séchage Naturel',
+              description: 'Pour une coupe qui marque un changement complet avec un brushing stylisé.',
+              price: 47,
+              duration_minutes: 60,
+              subprestation_id: 6,
+          },
+          {
+              name: 'Bar à Coupe – Coupe express sur cheveux secs',
+              description: 'Sans shampoing, sans séchage\n' +
+                  'Une coupe rapide sur cheveux propres et secs, uniquement pour entretenir votre coupe. Pas de transformation, juste un rafraîchissement !',
+              price: 30,
+              duration_minutes: 30,
+              subprestation_id: 6,
           },
         // , {
         //       name: 'Barrel',
