@@ -161,14 +161,14 @@ module.exports = {
               subprestation_id: 5,
           },
           {
-              name: 'Coupe + Shampoing + Transformation + Brushing',
+              name: 'Coupe Transformation + Shampoing + Brushing',
               description: 'Pour une coupe radicale et un brushing qui met en valeur le nouveau look.',
               price: 52,
               duration_minutes: 60,
               subprestation_id: 5,
           },
           {
-              name: 'Coupe + Shampoing + Transformation + Séchage Naturel',
+              name: 'Coupe Transformation + Shampoing + Séchage Naturel',
               description: 'Une coupe qui change tout, avec un séchage naturel pour un effet frais et léger.',
               price: 47,
               duration_minutes: 60,

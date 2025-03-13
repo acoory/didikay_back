@@ -16,6 +16,7 @@ import mailService from "../../../infrastructure/mailer/mailService";
 import Stripe from "stripe";
 import PaymentsModels from "../../../domain/models/payments.models";
 
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 
@@ -325,7 +326,8 @@ router.delete("/cancel/:id/:code", async (req: Request, res: Response):Promise<a
         }
         );
 
-        console.log("payment de booking : " , booking);
+        // console.log("payment de booking : " , booking.dateTimeStart);
+        // console.log("Start prestation : " , booking.dateTimeStart);
 
         if(!booking) {
             return res.status(404).json({ message: 'Réservation non trouvée.' });
@@ -336,13 +338,25 @@ router.delete("/cancel/:id/:code", async (req: Request, res: Response):Promise<a
             return res.status(403).json({ message: 'Code de confirmation invalide.' });
         }
 
-        const refund = await stripe.refunds.create({
-            payment_intent: booking.payment.paymentIntent,
-        });
+        const now = moment().utc();
+        const bookingDate = moment(booking.dateTimeStart).utc();
 
-        if(!refund) {
-            return res.status(500).json({ message: 'Erreur lors du remboursement.' });
+        const diffHours = bookingDate.diff(now, 'hours');
+
+        if (diffHours > 24) {
+            console.log("Remboursement possible");
+
+            const refund = await stripe.refunds.create({
+                payment_intent: booking.payment.paymentIntent,
+            });
+
+            if(!refund) {
+                return res.status(500).json({ message: 'Erreur lors du remboursement.' });
+            }
+        } else {
+            console.log("Remboursement non autorisé");
         }
+
 
         const deleted = await bookingModel.destroy({
             where: {
